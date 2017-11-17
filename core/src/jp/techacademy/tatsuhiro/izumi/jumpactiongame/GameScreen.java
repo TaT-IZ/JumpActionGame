@@ -55,7 +55,6 @@ public class GameScreen extends ScreenAdapter {
     int mHighScore;
     Preferences mPrefs; // ←追加する
 
-    // --- 以下省略 ---
 
     public GameScreen(JumpActionGame game) {
         mGame = game;
@@ -138,7 +137,7 @@ public class GameScreen extends ScreenAdapter {
         // スコア表示
         mGuiCamera.update(); // ←追加する
         mGame.batch.setProjectionMatrix(mGuiCamera.combined); // ←追加する
-        mGame.batch.begin(); // ←追加する
+       // mGame.batch.begin(); // ←追加する
         mFont.draw(mGame.batch, "HighScore: " + mHighScore, 16, GUI_HEIGHT - 15); // ←追加する
         mFont.draw(mGame.batch, "Score: " + mScore, 16, GUI_HEIGHT - 35); // ←追加する
         mGame.batch.end(); // ←追加する
@@ -279,7 +278,10 @@ public class GameScreen extends ScreenAdapter {
                 mScore++; // ←追加する
                 if (mScore > mHighScore) { // ←追加する
                     mHighScore = mScore; // ←追加する
-                } // ←追加する
+                    //ハイスコアをPreferenceに保存する
+                    mPrefs.putInteger("HIGHSCORE", mHighScore); // ←追加する
+                    mPrefs.flush(); // ←追加する
+                }
                 break;
             }
         }
