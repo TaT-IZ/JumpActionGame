@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Random;
 
 public class GameScreen extends ScreenAdapter {
+
     static final float CAMERA_WIDTH = 10;
     static final float CAMERA_HEIGHT = 15;
     static final float WORLD_WIDTH = 10;
@@ -46,6 +47,7 @@ public class GameScreen extends ScreenAdapter {
     List<Star> mStars;
     Ufo mUfo;
     Player mPlayer;
+    List<Enemy> mEnemys;
 
     float mHeightSoFar;
     int mGameState;
@@ -80,6 +82,7 @@ public class GameScreen extends ScreenAdapter {
         mRandom = new Random();
         mSteps = new ArrayList<Step>();
         mStars = new ArrayList<Star>();
+        mEnemys = new ArrayList<Enemy>();
         mGameState = GAME_STATE_READY;
         mTouchPoint = new Vector3();
         mFont = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
@@ -106,6 +109,7 @@ public class GameScreen extends ScreenAdapter {
         if (mPlayer.getY() > mCamera.position.y) {
             mCamera.position.y = mPlayer.getY();
         }
+
         mGame.batch.begin();
 
 
@@ -126,6 +130,14 @@ public class GameScreen extends ScreenAdapter {
         // Star
         for (int i = 0; i < mStars.size(); i++) {
             mStars.get(i).draw(mGame.batch);
+        }  // Star
+        for (int i = 0; i < mStars.size(); i++) {
+            mStars.get(i).draw(mGame.batch);
+        }
+
+        // enemy
+        for (int i = 0; i < mEnemys.size(); i++) {
+            mEnemys.get(i).draw(mGame.batch);
         }
 
         // UFO
@@ -133,6 +145,7 @@ public class GameScreen extends ScreenAdapter {
 
         //Player
         mPlayer.draw(mGame.batch);
+
 
         // スコア表示
         mGuiCamera.update(); // ←追加する
@@ -157,6 +170,7 @@ public class GameScreen extends ScreenAdapter {
         Texture starTexture = new Texture("star.png");
         Texture playerTexture = new Texture("uma.png");
         Texture ufoTexture = new Texture("ufo.png");
+        Texture enemyTexture = new Texture("uma.png");
 
         // StepとStarをゴールの高さまで配置していく
         float y = 0;
@@ -176,6 +190,13 @@ public class GameScreen extends ScreenAdapter {
                 mStars.add(star);
             }
 
+            if (mRandom.nextFloat() > 0.6f) {
+                Enemy enemy = new Enemy(enemyTexture, 0, 0, 72, 72);
+                enemy.setPosition(step.getX() + mRandom.nextFloat(), step.getY() + Enemy.ENEMY_HEIGHT + mRandom.nextFloat() * 3);
+                mEnemys.add(enemy);
+            }
+
+
             y += (maxJumpHeight - 0.5f);
             y -= mRandom.nextFloat() * (maxJumpHeight / 3);
         }
@@ -183,6 +204,7 @@ public class GameScreen extends ScreenAdapter {
         // Playerを配置
         mPlayer = new Player(playerTexture, 0, 0, 72, 72);
         mPlayer.setPosition(WORLD_WIDTH / 2 - mPlayer.getWidth() / 2, Step.STEP_HEIGHT);
+
 
         // ゴールのUFOを配置
         mUfo = new Ufo(ufoTexture, 0, 0, 120, 74);
@@ -264,6 +286,18 @@ public class GameScreen extends ScreenAdapter {
             mGameState = GAME_STATE_GAMEOVER;
             return;
         }
+
+        // ｝Enemyとの当たり判定
+        for (int i = 0; i < mEnemys.size(); i++) {
+            Enemy enemy = mEnemys.get(i);
+
+            if (mPlayer.getBoundingRectangle().overlaps(enemy.getBoundingRectangle())) {
+                Gdx.app.log("JampActionGame", "CLEAR");
+                mGameState = GAME_STATE_GAMEOVER;
+                updateGameOver();
+                }
+            }
+
 
         // Starとの当たり判定
         for (int i = 0; i < mStars.size(); i++) {
