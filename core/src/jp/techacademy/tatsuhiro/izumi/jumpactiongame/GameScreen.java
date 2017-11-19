@@ -3,7 +3,6 @@ package jp.techacademy.tatsuhiro.izumi.jumpactiongame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -59,12 +58,20 @@ public class GameScreen extends ScreenAdapter {
     int mHighScore;
     Preferences mPrefs; // ←追加する
 
-    Music coin;
     Sound over;
+    Sound hoshi;
+    Sound jump;
+    Sound dorodoro;
 
 
     public GameScreen(JumpActionGame game) {
         mGame = game;
+
+        over = Gdx.audio.newSound(Gdx.files.internal("data/over.mp3"));//音の再生には時間がかかるので、先にコンストラクタ内で呼び込みを行っておく
+        hoshi = Gdx.audio.newSound(Gdx.files.internal("data/star.mp3"));
+        jump = Gdx.audio.newSound(Gdx.files.internal("data/jump.mp3"));
+        dorodoro = Gdx.audio.newSound(Gdx.files.internal("data/dorodoro.mp3"));
+
 
         // 背景の準備
         Texture bgTexture = new Texture("back.png");
@@ -135,10 +142,8 @@ public class GameScreen extends ScreenAdapter {
         // Star
         for (int i = 0; i < mStars.size(); i++) {
             mStars.get(i).draw(mGame.batch);
-        }  // Star
-        for (int i = 0; i < mStars.size(); i++) {
-            mStars.get(i).draw(mGame.batch);
         }
+
 
         // enemy
         for (int i = 0; i < mEnemys.size(); i++) {
@@ -272,6 +277,7 @@ public class GameScreen extends ScreenAdapter {
 
     private void checkGameOver() {
         if (mHeightSoFar - CAMERA_HEIGHT / 2 > mPlayer.getY()) {
+            dorodoro.play();
             Gdx.app.log("JampActionGame", "GAMEOVER");
             mGameState = GAME_STATE_GAMEOVER;
         }
@@ -297,10 +303,7 @@ public class GameScreen extends ScreenAdapter {
             Enemy enemy = mEnemys.get(i);
 
             if (mPlayer.getBoundingRectangle().overlaps(enemy.getBoundingRectangle())) {
-
-                over = Gdx.audio.newSound(Gdx.files.internal("android/assets/data/over.mp3"));//App落ちてしまう
                 over.play();
-
                 Gdx.app.log("JampActionGame", "CLEAR");
                 mGameState = GAME_STATE_GAMEOVER;
                 updateGameOver();
@@ -317,6 +320,7 @@ public class GameScreen extends ScreenAdapter {
             }
 
             if (mPlayer.getBoundingRectangle().overlaps(star.getBoundingRectangle())) {
+                hoshi.play();
                 star.get();
                 mScore++; // ←追加する
                 if (mScore > mHighScore) { // ←追加する
@@ -344,6 +348,7 @@ public class GameScreen extends ScreenAdapter {
 
             if (mPlayer.getY() > step.getY()) {
                 if (mPlayer.getBoundingRectangle().overlaps(step.getBoundingRectangle())) {
+                    jump.play();
                     mPlayer.hitStep();
                     if (mRandom.nextFloat() > 0.5f) {
                         step.vanish();
