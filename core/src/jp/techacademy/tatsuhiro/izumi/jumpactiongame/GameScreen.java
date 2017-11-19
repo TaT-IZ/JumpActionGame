@@ -1,8 +1,10 @@
 package jp.techacademy.tatsuhiro.izumi.jumpactiongame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences; // ←追加する
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -56,6 +58,9 @@ public class GameScreen extends ScreenAdapter {
     int mScore;
     int mHighScore;
     Preferences mPrefs; // ←追加する
+
+    Music coin;
+    Sound over;
 
 
     public GameScreen(JumpActionGame game) {
@@ -292,6 +297,10 @@ public class GameScreen extends ScreenAdapter {
             Enemy enemy = mEnemys.get(i);
 
             if (mPlayer.getBoundingRectangle().overlaps(enemy.getBoundingRectangle())) {
+
+                over = Gdx.audio.newSound(Gdx.files.internal("android/assets/data/over.mp3"));//App落ちてしまう
+                over.play();
+
                 Gdx.app.log("JampActionGame", "CLEAR");
                 mGameState = GAME_STATE_GAMEOVER;
                 updateGameOver();

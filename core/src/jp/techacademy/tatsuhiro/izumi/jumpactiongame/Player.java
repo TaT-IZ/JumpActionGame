@@ -15,6 +15,7 @@ public class Player extends GameObject{
     public static final int PLAYER_STATE_JUMP = 0;
     public static final int PLAYER_STATE_FALL = 1;
 
+
     // 速度
     public static final float PLAYER_JUMP_VELOCITY = 11.0f;
     public static final float PLAYER_MOVE_VELOCITY = 20.0f;
