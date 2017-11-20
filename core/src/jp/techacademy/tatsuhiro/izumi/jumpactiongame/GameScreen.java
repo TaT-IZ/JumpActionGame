@@ -23,7 +23,7 @@ public class GameScreen extends ScreenAdapter {
     static final float CAMERA_WIDTH = 10;
     static final float CAMERA_HEIGHT = 15;
     static final float WORLD_WIDTH = 10;
-    static final float WORLD_HEIGHT = 15 * 20; // 20画面分登れば終了
+    static final float WORLD_HEIGHT = 15 * 10; // 20画面分登れば終了
     static final float GUI_WIDTH = 320;
     static final float GUI_HEIGHT = 480;
 
@@ -102,7 +102,7 @@ public class GameScreen extends ScreenAdapter {
         mScore = 0;
 
         // ハイスコアをPreferencesから取得する
-        mPrefs = Gdx.app.getPreferences("jp.techacademy.taro.kirameki.jumpactiongame"); // ←追加する
+        mPrefs = Gdx.app.getPreferences("p.techacademy.tatsuhiro.izumi.jumpactiongame"); // ←追加する
         mHighScore = mPrefs.getInteger("HIGHSCORE", 0); // ←追加する
 
         createStage();
