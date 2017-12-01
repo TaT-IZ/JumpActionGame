@@ -1,13 +1,13 @@
 package jp.techacademy.tatsuhiro.izumi.jumpactiongame;
 
 /**
- * Created by Tatsuhiro on 2017/11/15.
+ * Created by Tatsuhiro on 2017/11/29.
  */
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class Star extends Sprite {
+public class Star1 extends Sprite {
     // 横幅、高さ
     public static final float STAR_WIDTH = 0.8f;
     public static final float STAR_HEIGHT = 0.5f;
@@ -18,7 +18,7 @@ public class Star extends Sprite {
 
     int mState;
 
-    public Star(Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
+    public Star1(Texture texture, int srcX, int srcY, int srcWidth, int srcHeight) {
         super(texture, srcX, srcY, srcWidth, srcHeight);
         setSize(STAR_WIDTH, STAR_HEIGHT);
         mState = STAR_EXIST;

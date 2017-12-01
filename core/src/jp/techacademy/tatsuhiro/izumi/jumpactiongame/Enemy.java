@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Enemy extends Sprite {
     // 横幅、高さ
-    public static final float ENEMY_WIDTH = 0.8f;
+    public static final float ENEMY_WIDTH = 2.0f;
     public static final float ENEMY_HEIGHT = 0.8f;
 
     // 状態

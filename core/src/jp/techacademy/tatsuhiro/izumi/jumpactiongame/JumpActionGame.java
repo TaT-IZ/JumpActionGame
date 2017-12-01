@@ -1,7 +1,6 @@
 package jp.techacademy.tatsuhiro.izumi.jumpactiongame;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class JumpActionGame extends Game {
@@ -20,5 +19,6 @@ public class JumpActionGame extends Game {
 
 		// GameScreenを表示する
 		setScreen(new GameScreen(this));
+
 	}
 }
