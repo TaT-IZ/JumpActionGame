@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Star1 extends Sprite {
     // 横幅、高さ
-    public static final float STAR_WIDTH = 0.8f;
-    public static final float STAR_HEIGHT = 0.5f;
+    public static final float STAR_WIDTH = 1.0f;
+    public static final float STAR_HEIGHT = 0.7f;
 
     // 状態
     public static final int STAR_EXIST = 0;

@@ -6,41 +6,46 @@ package jp.techacademy.tatsuhiro.izumi.jumpactiongame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-public class ResultScreen extends ScreenAdapter {
-    static final float GUI_WIDTH = 960 ;
+public class BattleScreen1 extends ScreenAdapter {
+    static final float GUI_WIDTH = 960;
     static final float GUI_HEIGHT = 640;
 
     private JumpActionGame mGame;
     Sprite mBg;
     OrthographicCamera mGuiCamera;
     FitViewport mGuiViewPort;
+    Battle mBattle;
+
     BitmapFont mFont;
+    private Music battle;
 
-    int mScore;
 
-    public ResultScreen(JumpActionGame game, int score) {
+    public BattleScreen1(JumpActionGame game, int score) {
+
+        battle = Gdx.audio.newMusic(Gdx.files.internal("data/battledark.mp3"));
 
         mGame = game;
         if (mGame.mRequestHandler != null) { // ←追加する
             mGame.mRequestHandler.showAds(true); // ←追加する
         } // ←追加する
 
-        mScore = score;
 
         // 背景の準備
-        Texture bgTexture = new Texture("resultback.png");
-        mBg = new Sprite(new TextureRegion(bgTexture, 0, 0, 540, 810));
+
+        Texture bgTexture = new Texture("battle.back.jpg");
+        mBg = new Sprite(new TextureRegion(bgTexture, 0, 0, 760, 570));
         mBg.setSize(GUI_WIDTH, GUI_HEIGHT);
         mBg.setPosition(0, 0);
+
 
         // GUI用のカメラを設定する
         mGuiCamera = new OrthographicCamera();
@@ -49,6 +54,7 @@ public class ResultScreen extends ScreenAdapter {
 
         // フォント
         mFont = new BitmapFont(Gdx.files.internal("font.fnt"), Gdx.files.internal("font.png"), false);
+
     }
 
     @Override
@@ -61,18 +67,15 @@ public class ResultScreen extends ScreenAdapter {
         mGuiCamera.update();
         mGame.batch.setProjectionMatrix(mGuiCamera.combined);
 
+
         mGame.batch.begin();
         mBg.draw(mGame.batch);
-        mFont.draw(mGame.batch, "Score: " + mScore, 0, GUI_HEIGHT / 2 + 40, GUI_WIDTH, Align.center, false);
-        mFont.draw(mGame.batch, "Retry?", 0, GUI_HEIGHT / 2 - 40, GUI_WIDTH, Align.center, false);
         mGame.batch.end();
+        battle.play();
+
 
         if (Gdx.input.justTouched()) {
-            if (mGame.mRequestHandler != null) { // ←追加する
-                mGame.mRequestHandler.showAds(false); // ←追加する
-            } // ←追加する
 
-            mGame.setScreen(new GameScreen(mGame));
         }
     }
 }
